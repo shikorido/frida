@@ -1,8 +1,11 @@
 #!/bin/bash
 
+[ -z "$FRIDA_HOST" ] && export FRIDA_HOST=android-arm64
+
 releng_path=`dirname $0`
 
-build_platform=$(uname -s | tr '[A-Z]' '[a-z]' | sed 's,^darwin$,macos,')
+build_platform=android
+#$(uname -s | tr '[A-Z]' '[a-z]' | sed 's,^darwin$,macos,')
 build_arch=$($releng_path/detect-arch.sh)
 build_platform_arch=${build_platform}-${build_arch}
 
@@ -87,6 +90,9 @@ case $build_platform in
   macos)
     tar_stdin="-"
     ;;
+  android)
+    tar_stdin="-"
+    ;;
   *)
     echo "Could not determine build platform" > /dev/stderr
     exit 1
@@ -97,14 +103,16 @@ if [ -z "$FRIDA_HOST" ]; then
 fi
 
 if [ $host_platform = android ]; then
-  ndk_required_name=r17b
-  ndk_required_version=17.1.4828580
+  ndk_required_name=r27c
+  ndk_required_version=27.2.0
+  ANDROID_NDK_ROOT=$HOME/opt
   if [ -n "$ANDROID_NDK_ROOT" ]; then
-    if [ -f "$ANDROID_NDK_ROOT/source.properties" ]; then
-      ndk_installed_version=$(grep Pkg.Revision "$ANDROID_NDK_ROOT/source.properties" | awk '{ print $NF; }')
-    else
-      ndk_installed_version=$(cut -f1 -d" " "$ANDROID_NDK_ROOT/RELEASE.TXT")
-    fi
+    ndk_installed_version=27.2.0
+    #if [ -f "$ANDROID_NDK_ROOT/source.properties" ]; then
+    #  ndk_installed_version=$(grep Pkg.Revision "$ANDROID_NDK_ROOT/source.properties" | awk '{ print $NF; }')
+    #else
+    #  ndk_installed_version=$(cut -f1 -d" " "$ANDROID_NDK_ROOT/RELEASE.TXT")
+    #fi
     case $ndk_installed_version in
       $ndk_required_version)
         ;;
@@ -672,7 +680,9 @@ if ! grep -Eq "^$toolchain_version\$" "$FRIDA_TOOLROOT/.version" 2>/dev/null; th
     tar -C "$FRIDA_TOOLROOT" -xjf $local_toolchain || exit 1
   else
     echo "Downloading and deploying toolchain..."
-    $download_command "https://build.frida.re/toolchain-${toolchain_version}-${build_platform}-${build_arch}.tar.bz2" | tar -C "$FRIDA_TOOLROOT" -xj $tar_stdin || exit 1
+    echo "https://build.frida.re/toolchain-${toolchain_version}-${build_platform}-${build_arch}.tar.bz2"
+    $download_command "https://build.frida.re/toolchain-${toolchain_version}-linux-${build_arch}.tar.bz2" | tar -C "$FRIDA_TOOLROOT" -xj $tar_stdin || exit 1
+    #$download_command "https://build.frida.re/toolchain-${toolchain_version}-${build_platform}-${build_arch}.tar.bz2" | tar -C "$FRIDA_TOOLROOT" -xj $tar_stdin || exit 1
   fi
 
   for template in $(find $FRIDA_TOOLROOT -name "*.frida.in"); do

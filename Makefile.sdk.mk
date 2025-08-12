@@ -22,6 +22,8 @@ else
 	download := wget -O - -q
 endif
 
+FRIDA_HOST ?= android-arm64
+
 ifdef FRIDA_HOST
 	host_platform := $(shell echo $(FRIDA_HOST) | cut -f1 -d"-")
 else
@@ -373,9 +375,12 @@ ifeq ($(host_arch), arm64)
 	ndk_abi := aarch64-linux-android
 	ndk_triplet := aarch64-linux-android
 endif
-	ndk_build_platform_arch := $(shell uname -s | tr '[A-Z]' '[a-z]')-$(build_arch)
-	ndk_llvm_prefix := $(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/$(ndk_build_platform_arch)
-	ndk_gcc_prefix := $(ANDROID_NDK_ROOT)/toolchains/$(ndk_abi)-4.9/prebuilt/$(ndk_build_platform_arch)
+	ndk_build_platform_arch := android-arm64
+	#$(shell uname -s | tr '[A-Z]' '[a-z]')-$(build_arch)
+	ndk_llvm_prefix :=
+	#$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/$(ndk_build_platform_arch)
+	ndk_gcc_prefix :=
+	#$(ANDROID_NDK_ROOT)/toolchains/$(ndk_abi)-4.9/prebuilt/$(ndk_build_platform_arch)
 	openssl_host_env := \
 		CPP=clang CC=clang CXX=clang++ LD= LDFLAGS= AR=$(ndk_triplet)-ar RANLIB=$(ndk_triplet)-ranlib \
 		ANDROID_NDK=$(ANDROID_NDK_ROOT) \
@@ -493,8 +498,8 @@ ifeq ($(host_platform), android)
 	v8_os := android
 	v8_platform_args := \
 		android_ndk_root="$(ANDROID_NDK_ROOT)" \
-		android_ndk_version="r17b" \
-		android_ndk_major_version=17 \
+		android_ndk_version="r27c" \
+		android_ndk_major_version=27 \
 		android32_ndk_api_level=14 \
 		android64_ndk_api_level=21
 	v8_libs_private := "-llog -lm"
@@ -502,7 +507,7 @@ endif
 
 gn:
 	# Google's prebuilt GN requires a newer glibc than our Debian Squeeze buildroot has.
-	git clone $(repo_base_url)/gn$(repo_suffix)
+	#git clone $(repo_base_url)/gn$(repo_suffix)
 
 build/fs-tmp-%/gn/build.ninja: build/fs-env-%.rc gn
 	. $< \
