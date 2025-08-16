@@ -1,0 +1,50 @@
+[constants]
+common_flags = ['-march=armv8-a']
+c_like_flags = ['-ffunction-sections', '-fdata-sections']
+linker_flags = ['-Wl,--gc-sections']
+cxx_like_flags = []
+cxx_link_flags = []
+
+[binaries]
+c = ['/data/data/com.termux/files/usr/bin/cc'] + common_flags
+cpp = ['/data/data/com.termux/files/usr/bin/c++'] + common_flags
+objc = ['/data/data/com.termux/files/usr/bin/cc']
+objcpp = ['/data/data/com.termux/files/usr/bin/c++']
+vala = ['/data/data/com.termux/files/usr/bin/valac']
+ar = ['/data/data/com.termux/files/usr/bin/ar']
+as = ['/data/data/com.termux/files/usr/bin/as']
+cmake = ['/data/data/com.termux/files/usr/bin/cmake']
+ld = ['/data/data/com.termux/files/usr/bin/ld']
+llvm-config = ['/data/data/com.termux/files/usr/bin/llvm-config']
+make = ['/data/data/com.termux/files/usr/bin/make']
+nm = ['/data/data/com.termux/files/usr/bin/nm']
+objcopy = ['/data/data/com.termux/files/usr/bin/objcopy']
+objdump = ['/data/data/com.termux/files/usr/bin/objdump']
+pkg-config = ['/data/data/com.termux/files/usr/bin/pkg-config']
+ranlib = ['/data/data/com.termux/files/usr/bin/ranlib']
+readelf = ['/data/data/com.termux/files/usr/bin/readelf']
+size = ['/data/data/com.termux/files/usr/bin/size']
+strings = ['/data/data/com.termux/files/usr/bin/strings']
+strip = ['/data/data/com.termux/files/usr/bin/strip', '--strip-all']
+vapigen = ['/data/data/com.termux/files/usr/bin/vapigen']
+
+[built-in options]
+c_args = c_like_flags
+cpp_args = c_like_flags + cxx_like_flags
+c_link_args = linker_flags
+cpp_link_args = linker_flags + cxx_link_flags
+b_lundef = true
+pkg_config_path = []
+
+[properties]
+pkg_config_libdir = '/data/data/com.termux/files/home/opt/sysroots/ndk/arm64/usr/lib/pkgconfig:/data/data/com.termux/files/home/opt/sysroots/ndk/arm64/usr/share/pkgconfig'
+needs_exe_wrapper = false
+
+[host_machine]
+system = 'linux'
+subsystem = 'linux'
+kernel = 'linux'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+

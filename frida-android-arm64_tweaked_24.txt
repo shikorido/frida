@@ -1,0 +1,61 @@
+[constants]
+common_flags = ['-target', 'aarch64-none-linux-android24', '--sysroot', '/data/data/com.termux/files/home/opt/sysroots/ndk/arm64']
+c_like_flags = ['-v', '-Wl,--verbose', '-fno-termux-rpath', '-DANDROID', '-D__ANDROID__', '-ffunction-sections', '-fdata-sections', '-Wno-error=int-conversion', '-Wno-error=declaration-after-statement', '-Wno-error=incompatible-pointer-types']
+linker_flags = ['-v', '-Wl,--verbose', '-fuse-ld=lld', '-fno-termux-rpath', '-Wl,-z,relro', '-Wl,-z,noexecstack', '-Wl,--gc-sections', '-L/data/data/com.termux/files/home/opt/sysroots/ndk/arm64/usr/lib', '-L/data/data/com.termux/files/home/opt/sysroots/ndk/arm64/usr/lib/aarch64-linux-android/24', '-Wl,--rpath=/system/lib64:/vendor/lib64:/odm/lib64:/product/lib64:/data/data/com.termux/files/home/opt/sysroots/ndk/arm64/usr/lib:/data/data/com.termux/files/home/opt/sysroots/ndk/arm64/usr/lib/aarch64-linux-android/24', '-Wl,--hash-style=both']
+cxx_like_flags = ['-D_LIBCPP_HAS_NO_OFF_T_FUNCTIONS']
+cxx_link_flags = []
+ccache = ['ccache']
+
+[binaries]
+c = ccache + ['clang'] + common_flags
+cpp = ccache + ['clang++'] + common_flags
+objc = ['cc']
+objcpp = ['c++']
+vala = ['valac']
+ar = ['llvm-ar']
+as = ccache + ['llvm-as']
+cmake = ['false']
+ld = ccache + ['ld.lld']
+llvm-config = ['llvm-config']
+make = ['make']
+nm = ['llvm-nm']
+ranlib = ['llvm-ranlib']
+strip = ['llvm-strip', '--strip-all']
+readelf = ['llvm-readelf']
+objcopy = ['llvm-objcopy']
+objdump = ['llvm-objdump']
+pkg-config = ['pkg-config']
+size = ['llvm-size']
+strings = ['llvm-strings']
+vapigen = ['vapigen']
+exe_wrapper = ['exe_wrapper.sh']
+
+[built-in options]
+c_args = c_like_flags + []
+cpp_args = c_like_flags + cxx_like_flags + []
+c_link_args = linker_flags
+cpp_link_args = linker_flags + cxx_link_flags
+b_lundef = true
+pkg_config_path = ['/invalid']
+
+[properties]
+#pkg_config_libdir = '/invalid'
+pkg_config_libdir = '/data/data/com.termux/files/home/notes_frida/pkgconfig'
+needs_exe_wrapper = false
+
+[build_machine]
+system = 'android'
+subsystem = 'android'
+kernel = 'android'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+
+[host_machine]
+system = 'android'
+subsystem = 'android'
+kernel = 'android'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+

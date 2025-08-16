@@ -1,0 +1,4 @@
+[binaries]
+pkg-config = ['pkg-config']
+vala = ['valac']
+exe_wrapper = ['exe_wrapper.sh']
